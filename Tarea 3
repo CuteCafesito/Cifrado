@@ -1,0 +1,116 @@
+import string
+
+def cifrado_cesar(texto, desplazamiento):
+    """
+    Cifra un texto usando el cifrado César con un desplazamiento dado.
+    """
+    resultado = ""
+    for char in texto:
+        if char.isalpha():
+            start = ord('A') if char.isupper() else ord('a')
+            resultado += chr((ord(char) - start + desplazamiento) % 26 + start)
+        else:
+            resultado += char  # Mantiene caracteres no alfabéticos intactos
+    return resultado
+
+def descifrado_cesar(texto, desplazamiento):
+    """
+    Descifra un texto usando el cifrado César con un desplazamiento dado.
+    """
+    return cifrado_cesar(texto, -desplazamiento)
+
+def cifrado_vigenere(texto, clave):
+    """
+    Cifra un texto usando el cifrado de Vigenère con una clave.
+    """
+    resultado = []
+    clave = clave.upper()
+    i = 0
+    for char in texto:
+        if char.isalpha():
+            shift = ord(clave[i % len(clave)]) - ord('A')
+            start = ord('A') if char.isupper() else ord('a')
+            resultado.append(chr((ord(char) - start + shift) % 26 + start))
+            i += 1
+        else:
+            resultado.append(char)  # Mantiene caracteres no alfabéticos intactos
+    return ''.join(resultado)
+
+def descifrado_vigenere(texto, clave):
+    """
+    Descifra un texto usando el cifrado de Vigenère con una clave.
+    """
+    resultado = []
+    clave = clave.upper()
+    i = 0
+    for char in texto:
+        if char.isalpha():
+            shift = ord(clave[i % len(clave)]) - ord('A')
+            start = ord('A') if char.isupper() else ord('a')
+            resultado.append(chr((ord(char) - start - shift) % 26 + start))
+            i += 1
+        else:
+            resultado.append(char)  # Mantiene caracteres no alfabéticos intactos
+    return ''.join(resultado)
+
+def cifrado_xor(texto, clave):
+    """
+    Cifra un texto usando el cifrado XOR con una clave.
+    """
+    resultado = ''.join([chr(ord(c) ^ clave) for c in texto])
+    return resultado
+
+def menu():
+    """
+    Menú para interactuar con el usuario y seleccionar el tipo de cifrado.
+    """
+    while True:
+        print("\n--- Programa de Criptografía ---")
+        print("1. Cifrado César")
+        print("2. Descifrado César")
+        print("3. Cifrado Vigenère")
+        print("4. Descifrado Vigenère")
+        print("5. Cifrado/Descifrado XOR")
+        print("6. Salir")
+        
+        try:
+            opcion = int(input("Selecciona una opción (1-6): "))
+            
+            if opcion == 1:  # Cifrado César
+                texto = input("Introduce el texto a cifrar: ")
+                desplazamiento = int(input("Introduce el desplazamiento (entero): "))
+                print("Texto cifrado:", cifrado_cesar(texto, desplazamiento))
+            
+            elif opcion == 2:  # Descifrado César
+                texto = input("Introduce el texto a descifrar: ")
+                desplazamiento = int(input("Introduce el desplazamiento (entero): "))
+                print("Texto descifrado:", descifrado_cesar(texto, desplazamiento))
+            
+            elif opcion == 3:  # Cifrado Vigenère
+                texto = input("Introduce el texto a cifrar: ")
+                clave = input("Introduce la clave: ")
+                print("Texto cifrado:", cifrado_vigenere(texto, clave))
+            
+            elif opcion == 4:  # Descifrado Vigenère
+                texto = input("Introduce el texto a descifrar: ")
+                clave = input("Introduce la clave: ")
+                print("Texto descifrado:", descifrado_vigenere(texto, clave))
+            
+            elif opcion == 5:  # Cifrado/Descifrado XOR
+                texto = input("Introduce el texto: ")
+                clave = int(input("Introduce la clave (un número entero): "))
+                print("Texto cifrado/descifrado:", cifrado_xor(texto, clave))
+            
+            elif opcion == 6:  # Salir
+                print("¡Hasta luego!")
+                break
+            
+            else:
+                print("Opción no válida. Por favor, selecciona un número entre 1 y 6.")
+        
+        except ValueError:
+            print("Entrada no válida. Por favor ingresa un número entero.")
+        
+if __name__ == "__main__":
+    menu()
+
